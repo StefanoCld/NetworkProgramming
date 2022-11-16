@@ -4,22 +4,27 @@ using UnityEngine;
 
 public class BigCubeController : MonoBehaviour
 {
+    [Header("Tags")]
+    [SerializeField] private const string smallCubeTag= "SmallCube";
+    [SerializeField] private const string bigCubeTag = "BigCube";
+
     [Header("Rotating Forces")]
     [SerializeField] private float rotatingForce = 30.0f;
 
     [Header("Floating Forces")]
-    [SerializeField] private float floatingSpeed = 0.5f;
+    [SerializeField] private float floatingSpeed = 0.25f;
     [SerializeField] private float floatingUpForce = 1200.0f;
-    [SerializeField] private float maxFloatingUpForceMultiplierValue = 100.0f;
-    [Header("Attraction Forces")]
+    //[SerializeField] private float maxFloatingUpForceMultiplierValue = 100.0f;
 
+    [Header("Attraction Forces")]
     [SerializeField] private float attractionForce = 70.0f;
     [SerializeField] private float attractionRadius = 1.5f;
     [SerializeField] private ForceMode attractionForceMode = ForceMode.Acceleration;
 
     [Header("Boom Forces")]
-    [SerializeField] private float boomForce = 0.0075f;
-    [SerializeField] private float boomRadius = 2;
+    [SerializeField] private float boomCapsuleHalfHeight = 2.0f;
+    [SerializeField] private float boomForce = 0.75f;
+    [SerializeField] private float boomRadius = 3.5f;
     [SerializeField] private ForceMode boomForceMode = ForceMode.Impulse;
 
     // Private Stuff
@@ -95,11 +100,16 @@ public class BigCubeController : MonoBehaviour
     {
         // Push BigCube upwards
         float UpForceMultiplier = 1 / (transform.position.y);
+
+        // TODO
         //UpForceMultiplier = Mathf.Clamp(UpForceMultiplier, 0, maxFloatingUpForceMultiplierValue);
         rb.AddForce(Vector3.up * (floatingUpForce * UpForceMultiplier));
 
         // Push little cubes away
-        Collider[] attractedColliders = Physics.OverlapSphere(transform.position, boomRadius);
+        Collider[] attractedColliders = Physics.OverlapCapsule(
+            transform.position - Vector3.up * boomCapsuleHalfHeight,
+            transform.position + Vector3.up * boomCapsuleHalfHeight, 
+            boomRadius);
 
         foreach (Collider collider in attractedColliders)
         {
@@ -107,15 +117,52 @@ public class BigCubeController : MonoBehaviour
 
             if (colliderRigidbody)
             {
-                Vector3 colliderToMeVersor = (transform.position - collider.transform.position).normalized;
+                if(collider.transform.position.y >= this.transform.position.y)
+                {
+                    Vector3 colliderToMeVersor = (transform.position - collider.transform.position).normalized;
+                    colliderRigidbody.AddForce(-colliderToMeVersor * boomForce, boomForceMode);
+                }
+                else
+                {
+                    // So that little cubes don't get stuck onto the plane
+                    Vector3 myPosProjected = transform.position;
+                    myPosProjected.y = collider.transform.position.y;
+                    Vector3 MeToColliderVersorProj = (collider.transform.position - myPosProjected).normalized;
+                    colliderRigidbody.AddForce(MeToColliderVersorProj * boomForce, boomForceMode);
+                }
 
-                colliderRigidbody.AddForce(-colliderToMeVersor * boomForce, boomForceMode);
+                SmallCube sc = collider.gameObject.GetComponent<SmallCube>();
+                if (sc)
+                    sc.Interact();
             }
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag(smallCubeTag))
+        {
+            SmallCube sc = collision.gameObject.GetComponent<SmallCube>();
+            if (sc)
+                sc.Interact();
+        }
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.CompareTag(smallCubeTag))
+        {
+            SmallCube sc = collision.gameObject.GetComponent<SmallCube>();
+            if (sc)
+                sc.Interact();
         }
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(transform.position, attractionRadius);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, boomRadius);
+        Gizmos.DrawWireSphere(transform.position + Vector3.up * boomCapsuleHalfHeight, boomRadius);
+        Gizmos.DrawWireSphere(transform.position - Vector3.up * boomCapsuleHalfHeight, boomRadius);
     }
 }

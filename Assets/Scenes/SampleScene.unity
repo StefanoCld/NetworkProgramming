@@ -7826,7 +7826,7 @@ GameObject:
   - component: {fileID: 2072745026}
   m_Layer: 0
   m_Name: BigCube
-  m_TagString: Untagged
+  m_TagString: BigCube
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7917,7 +7917,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2072745020}
   serializedVersion: 2
-  m_Mass: 500
+  m_Mass: 100
   m_Drag: 0
   m_AngularDrag: 30
   m_UseGravity: 1
@@ -7937,15 +7937,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1feb9037d33100443bb858a9d3432de5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  floatingSpeed: 0
-  floatingUpForce: 0
   rotatingForce: 30
+  floatingSpeed: 0.25
+  floatingUpForce: 1200
   attractionForce: 70
-  attractionRadius: 1.25
+  attractionRadius: 1.5
   attractionForceMode: 5
-  boomForce: 0.015
-  boomRadius: 2
-  boomForceMode: 1
+  boomCapsuleHalfHeight: 2
+  boomForce: 0.75
+  boomRadius: 1.54
+  boomForceMode: 2
 --- !u!1001 &2095029736
 PrefabInstance:
   m_ObjectHideFlags: 0
