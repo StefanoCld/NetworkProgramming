@@ -6,7 +6,6 @@ using Photon.Realtime;
 
 public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
 {
-
     [Header("Room stuff")]
     [SerializeField] private const string roomName = "CaldanaRicci's Room";
     [SerializeField] private const uint maxPlayersNum = 2;
