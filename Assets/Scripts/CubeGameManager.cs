@@ -68,6 +68,9 @@ public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
                 Quaternion rot = Quaternion.identity;
                 cubeState.DecompressData(ref pos, ref rot);
 
+                smallCube.transform.position = pos;
+                smallCube.transform.rotation = rot;
+
                 if (cubeState.isInteracting) smallCube.GetComponent<SmallCube>().Interact();
             }
 
