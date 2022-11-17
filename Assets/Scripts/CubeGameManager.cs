@@ -54,6 +54,22 @@ public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
 
         if (stream.IsReading)
         {
+            bigCube.transform.position = (Vector3)stream.ReceiveNext();
+            bigCube.transform.rotation = (Quaternion)stream.ReceiveNext();
+
+            int receivedCubeStates = (int)stream.ReceiveNext();
+
+            for (int i = 0; i < receivedCubeStates; ++i)
+            {
+                CubeState cubeState = (CubeState)stream.ReceiveNext();
+                Transform smallCube = smallCubesParent.transform.GetChild(cubeState.index);
+
+                Vector3 pos = Vector3.zero;
+                Quaternion rot = Quaternion.identity;
+                cubeState.DecompressData(ref pos, ref rot);
+
+                if (cubeState.isInteracting) smallCube.GetComponent<SmallCube>().Interact();
+            }
 
         }
     }
