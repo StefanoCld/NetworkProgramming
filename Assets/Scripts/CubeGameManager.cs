@@ -59,16 +59,16 @@ public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
     {
         base.OnJoinedRoom();
 
-        if (!(PhotonNetwork.IsMasterClient))
+        if (PhotonNetwork.IsMasterClient)
         {
-            bigCube.GetComponent<Rigidbody>().isKinematic = true;
-            bigCube.GetComponent<Rigidbody>().useGravity = false;
-            bigCube.GetComponent<BigCubeController>().enabled = false;
+            bigCube.GetComponent<Rigidbody>().isKinematic = false;
+            bigCube.GetComponent<Rigidbody>().useGravity = true;
+            bigCube.GetComponent<BigCubeController>().enabled = true;
 
             foreach(Transform smallCube in smallCubesParent.transform)
             {
-                smallCube.GetComponent<Rigidbody>().isKinematic = true;
-                smallCube.GetComponent<Rigidbody>().useGravity = false;
+                smallCube.GetComponent<Rigidbody>().isKinematic = false;
+                smallCube.GetComponent<Rigidbody>().useGravity = true;
             }
         }
     }
