@@ -1,6 +1,13 @@
+using ExitGames.Client.Photon;
+using Photon.Pun;
+using Photon.Pun.UtilityScripts;
+using Photon.Realtime;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+
 
 struct CubeState 
 {
@@ -61,5 +68,47 @@ struct CubeState
     {
         float t = Mathf.InverseLerp(originalMin, originalMax, value);
         return Mathf.Lerp(newMin, newMax, t);
+    }
+    public static byte[] Serialize(object customType)
+    {
+        CubeState s = (CubeState)customType;
+        byte[] byteArray = new byte[GetSize()];
+
+        Array.Copy(BitConverter.GetBytes(s.positionX), 0, byteArray, 0, 2);
+        byteArray[2] = s.positionY;
+        Array.Copy(BitConverter.GetBytes(s.positionZ), 0, byteArray, 3, 2);
+        byteArray[5] = s.rotationX;
+        byteArray[6] = s.rotationY;
+        byteArray[7] = s.rotationZ;
+        byteArray[8] = Convert.ToByte(s.isInteracting);
+        Array.Copy(BitConverter.GetBytes(s.index), 0, byteArray, 9, 2);
+
+        return byteArray;
+    }
+
+    public static object Deserialize(byte[] data)
+    {
+        var d = new CubeState();
+        d.positionX = BitConverter.ToInt16(data, 0);
+        d.positionY = data[2];
+        d.positionZ = BitConverter.ToInt16(data, 3);
+        d.rotationX = data[5];
+        d.rotationY = data[6];
+        d.rotationZ = data[7];
+        d.isInteracting = Convert.ToBoolean(data[8]);
+        d.index = BitConverter.ToUInt16(data, 9);
+
+        return d;
+    }
+
+    public static uint GetSize()
+    {
+        return
+            sizeof(short) +
+            sizeof(byte) +
+            sizeof(short) +
+            sizeof(byte) * 3 +
+            sizeof(bool) +
+            sizeof(short);
     }
 }

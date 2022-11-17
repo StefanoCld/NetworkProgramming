@@ -20,7 +20,7 @@ public class SmallCube : MonoBehaviour
     private Rigidbody rb;
     private Material material;
 
-    private bool isInteracting;
+    public bool isInteracting;
     private float timerCache;
 
     void Start()

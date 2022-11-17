@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using ExitGames.Client.Photon;
 
 public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
 {
@@ -11,27 +12,66 @@ public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] private const uint maxPlayersNum = 2;
 
     [Header("Cubes references")]
-    [SerializeField] private const uint smallCubesNumber = 900;
+    [SerializeField] private const int smallCubesNumber = 900;
     [SerializeField] private GameObject smallCubesParent;
     [SerializeField] private GameObject bigCube;
 
     //Private stuff
     private PhotonView myPhotonView;
 
+    private List<CubeState> cubeStates = new List<CubeState>(smallCubesNumber);
+
+    private uint m_bytesSentThisSecond;
+
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
         {
-            // STO SCRIVENDO I DATI DA MANDARE VIA RETE PER QUESTO OGGETTO
+            stream.SendNext(bigCube.transform.position);
+            stream.SendNext(bigCube.transform.rotation);
+
+            uint childIndex = 0;
+            foreach (Transform smallCube in smallCubesParent.transform)
+            {
+                if (smallCube.GetComponent<Rigidbody>().velocity != Vector3.zero)
+                {
+                    CubeState cubeState = new CubeState();
+                    cubeState.CompressData(smallCube.position, smallCube.rotation, smallCube.GetComponent<SmallCube>().isInteracting, (ushort)childIndex);
+                    cubeStates.Add(cubeState);
+                    m_bytesSentThisSecond += CubeState.GetSize();
+                }
+
+                ++childIndex;
+            }
+
+            stream.SendNext(cubeStates.Count);
+            foreach (CubeState cubeState in cubeStates)
+            {
+                stream.SendNext(cubeState);
+            }
+            cubeStates.Clear();
         }
+
         if (stream.IsReading)
         {
-            // HO RICEVUTO E STO LEGGENDO I DATI PER QUESTO OGGETTO
+
         }
     }
 
     void Start()
     {
+        // 42 == Photon code for our custom type
+        bool registrationResult = PhotonPeer.RegisterType(
+            typeof(CubeState), 
+            42, 
+            CubeState.Serialize,
+            CubeState.Deserialize);
+
+        if (registrationResult)
+        {
+            Debug.LogError("Custom Type registration Error!");
+        }
+
         PhotonNetwork.ConnectUsingSettings();
 
         myPhotonView = GetComponent<PhotonView>();
