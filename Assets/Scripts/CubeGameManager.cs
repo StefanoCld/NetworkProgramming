@@ -140,8 +140,9 @@ public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
             bigCube.GetComponent<Rigidbody>().isKinematic = false;
             bigCube.GetComponent<Rigidbody>().useGravity = true;
             bigCube.GetComponent<BigCubeController>().enabled = true;
+            bigCube.GetComponent<InterpolateTransform>().IsMasterClient = true;
 
-            foreach(Transform smallCube in smallCubesParent.transform)
+            foreach (Transform smallCube in smallCubesParent.transform)
             {
                 smallCube.GetComponent<Rigidbody>().isKinematic = false;
                 smallCube.GetComponent<Rigidbody>().useGravity = true;
