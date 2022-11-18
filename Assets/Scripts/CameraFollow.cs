@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
@@ -10,7 +8,6 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private float smoothingTime = 0.25f;
 
     private GameObject bigCube;
-    private Rigidbody rbBigCube;
 
     void Start()
     {
@@ -19,7 +16,6 @@ public class CameraFollow : MonoBehaviour
         if (bc)
         {
             bigCube = bc.gameObject;
-            rbBigCube = bc.gameObject.GetComponent<Rigidbody>();
         }
     }
 

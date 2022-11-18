@@ -1,14 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
 
 public class InterpolateTransform : MonoBehaviour
 {
     [SerializeField] private float positionInterpolationFactor = 50f;
     [SerializeField] private float rotationInterpolationFactor = 50f;
 
-    public bool IsMasterClient = false;
+    public bool IsMasterClient
+    {
+        get; set;
+    }
 
     public Vector3 lastPackagePosition;
     public Quaternion lastPackageRotation;

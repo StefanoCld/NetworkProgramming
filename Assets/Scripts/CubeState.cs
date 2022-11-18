@@ -1,10 +1,4 @@
-using ExitGames.Client.Photon;
-using Photon.Pun;
-using Photon.Pun.UtilityScripts;
-using Photon.Realtime;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 struct CubeState 
