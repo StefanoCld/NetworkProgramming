@@ -7,9 +7,11 @@ using ExitGames.Client.Photon;
 
 public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
 {
-    [Header("Room stuff")]
-    [SerializeField] private const string roomName = "CaldanaRicci's Room";
-    [SerializeField] private const uint maxPlayersNum = 2;
+    [Header("Network stuff")]
+    [SerializeField] private string roomName = "CaldanaRicci's Room";
+    [SerializeField] private uint maxPlayersNum = 2;
+    [SerializeField] private int sendRate = 30; // Default Value
+    //Packet loss (indagare)
 
     [Header("Cubes references")]
     [SerializeField] private const int smallCubesNumber = 900;
@@ -39,9 +41,6 @@ public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
         stream.SendNext(bigCube.transform.rotation);
 
         m_bytesSentThisSecond += CubeState.GetSize();
-
-
-
 
         uint childIndex = 0;
         foreach (Transform smallCube in smallCubesParent.transform)
@@ -104,7 +103,9 @@ public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     void Start()
-    {
+    { 
+        PhotonNetwork.SendRate = sendRate;
+
         // 42 == Photon code for our custom type
         bool registrationResult = PhotonPeer.RegisterType(
             typeof(CubeState), 
@@ -135,7 +136,6 @@ public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
             m_sendingTime = Time.time;
             m_bytesSentThisSecond = 0;
         }
-
     }
 
     public override void OnConnectedToMaster()
