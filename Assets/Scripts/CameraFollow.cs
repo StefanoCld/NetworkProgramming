@@ -4,8 +4,8 @@ public class CameraFollow : MonoBehaviour
 {
     [Header("Camera offset")]
     [SerializeField] private Vector3 offset;
-    [SerializeField] private float xRotation = 45;
-    [SerializeField] private float smoothingTime = 0.25f;
+    [SerializeField] private float xRotation = 45.0f;
+    //[SerializeField] private float smoothingTime = 0.25f;
 
     private GameObject bigCube;
 
@@ -21,9 +21,12 @@ public class CameraFollow : MonoBehaviour
 
     private void LateUpdate()
     {
-        Vector3 velocity = Vector3.zero;
-        Vector3 fixedYOffset = new Vector3((bigCube.transform.position + offset).x, 5, (bigCube.transform.position + offset).z);
-        transform.position = Vector3.SmoothDamp(transform.position, fixedYOffset, ref velocity, smoothingTime);
-        transform.rotation = Quaternion.Euler(xRotation, 0, 0);
+        //Vector3 velocity = Vector3.zero;
+        //Vector3 fixedYOffset = new Vector3(bigCube.transform.position.x + offset.x, offset.y, bigCube.transform.position.z + offset.z);
+        //transform.position = Vector3.SmoothDamp(transform.position, fixedYOffset, ref velocity, smoothingTime);
+        transform.SetPositionAndRotation(
+            new Vector3(bigCube.transform.position.x + offset.x, offset.y, bigCube.transform.position.z + offset.z), 
+            Quaternion.Euler(xRotation, 0, 0)
+        );
     }
 }
