@@ -145,7 +145,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75871d2a6a3ce9649bb61ad8db4a1769, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  positionInterpolationFactor: 50
-  rotationInterpolationFactor: 50
+  positionInterpolationFactor: 20
+  rotationInterpolationFactor: 20
+  IsMasterClient: 0
   lastPackagePosition: {x: 0, y: 0, z: 0}
   lastPackageRotation: {x: 0, y: 0, z: 0, w: 0}
