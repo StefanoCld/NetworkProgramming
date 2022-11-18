@@ -10,8 +10,7 @@ public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
     [Header("Network stuff")]
     [SerializeField] private string roomName = "CaldanaRicci's Room";
     [SerializeField] private uint maxPlayersNum = 2;
-    [SerializeField] private int sendRate = 30; // Default Value
-    //Packet loss (indagare)
+    [SerializeField] private int serializationRate = 100; // Default Value 100
 
     [Header("Cubes references")]
     [SerializeField] private const int smallCubesNumber = 900;
@@ -19,8 +18,6 @@ public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] private GameObject bigCube;
 
     //Private stuff
-    private PhotonView myPhotonView;
-
     private List<CubeState> cubeStates = new List<CubeState>(smallCubesNumber);
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -103,8 +100,8 @@ public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     void Start()
-    { 
-        PhotonNetwork.SendRate = sendRate;
+    {
+        PhotonNetwork.SerializationRate = 33;
 
         // 42 == Photon code for our custom type
         bool registrationResult = PhotonPeer.RegisterType(
@@ -121,8 +118,6 @@ public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
         Debug.Log("About to connect..");
 
         PhotonNetwork.ConnectUsingSettings();
-
-        myPhotonView = GetComponent<PhotonView>();
     }
 
     float m_sendingTime = 0;
