@@ -17,15 +17,13 @@ public class SmallCube : MonoBehaviour
     [SerializeField] private float fadingTime = 0.25f;
 
     // Private stuff
-    private Rigidbody rb;
     private Material material;
 
-    public bool isInteracting;
     private float timerCache;
+    public bool isInteracting;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
         material = GetComponent<MeshRenderer>().material;
         material.color = normalColor;
     }

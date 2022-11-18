@@ -5,7 +5,6 @@ using Photon.Pun;
 
 public class InterpolateTransform : MonoBehaviour
 {
-
     [SerializeField] private float positionInterpolationFactor = 50f;
     [SerializeField] private float rotationInterpolationFactor = 50f;
 

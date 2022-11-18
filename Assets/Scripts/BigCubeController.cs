@@ -14,7 +14,6 @@ public class BigCubeController : MonoBehaviour
     [Header("Floating Forces")]
     [SerializeField] private float floatingSpeed = 0.25f;
     [SerializeField] private float floatingUpForce = 1200.0f;
-    //[SerializeField] private float maxFloatingUpForceMultiplierValue = 100.0f;
 
     [Header("Attraction Forces")]
     [SerializeField] private float attractionForce = 70.0f;
@@ -101,8 +100,6 @@ public class BigCubeController : MonoBehaviour
         // Push BigCube upwards
         float UpForceMultiplier = 1 / (transform.position.y);
 
-        // TODO
-        //UpForceMultiplier = Mathf.Clamp(UpForceMultiplier, 0, maxFloatingUpForceMultiplierValue);
         rb.AddForce(Vector3.up * (floatingUpForce * UpForceMultiplier));
 
         // Push little cubes away

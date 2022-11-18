@@ -9,7 +9,7 @@ public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
 {
     [Header("Network stuff")]
     [SerializeField] private string roomName = "CaldanaRicci's Room";
-    [SerializeField] private uint maxPlayersNum = 2;
+    [SerializeField] private byte maxPlayersNum = 2;
     [SerializeField] private int serializationRate = 100; // Default Value 100
 
     [Header("Cubes references")]
@@ -37,8 +37,6 @@ public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
         stream.SendNext(bigCube.transform.position);
         stream.SendNext(bigCube.transform.rotation);
 
-        m_bytesSentThisSecond += CubeState.GetSize();
-
         uint childIndex = 0;
         foreach (Transform smallCube in smallCubesParent.transform)
         {
@@ -47,13 +45,7 @@ public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
                 CubeState cubeState = new CubeState();
                 cubeState.CompressData(smallCube.position, smallCube.rotation, smallCube.GetComponent<SmallCube>().isInteracting, (ushort)childIndex);
                 cubeStates.Add(cubeState);
-
-
-                m_bytesSentThisSecond += CubeState.GetSize();
-
-
             }
-
             ++childIndex;
         }
 
@@ -101,8 +93,6 @@ public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
 
     void Start()
     {
-        PhotonNetwork.SerializationRate = 33;
-
         // 42 == Photon code for our custom type
         bool registrationResult = PhotonPeer.RegisterType(
             typeof(CubeState), 
@@ -117,20 +107,9 @@ public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
 
         Debug.Log("About to connect..");
 
+        PhotonNetwork.SerializationRate = serializationRate;
+
         PhotonNetwork.ConnectUsingSettings();
-    }
-
-    float m_sendingTime = 0;
-    uint m_bytesSentThisSecond = 0;
-
-    void Update()
-    {
-        if (photonView.IsMine && Time.time >= m_sendingTime + 1)
-        {
-            Debug.Log(m_bytesSentThisSecond);
-            m_sendingTime = Time.time;
-            m_bytesSentThisSecond = 0;
-        }
     }
 
     public override void OnConnectedToMaster()
@@ -141,7 +120,7 @@ public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
 
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.IsVisible = true;
-        roomOptions.MaxPlayers = 2;
+        roomOptions.MaxPlayers = maxPlayersNum;
         PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, TypedLobby.Default);
     }
 

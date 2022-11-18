@@ -15,6 +15,7 @@ public class CameraFollow : MonoBehaviour
     void Start()
     {
         BigCubeController bc = FindObjectOfType<BigCubeController>();
+
         if (bc)
         {
             bigCube = bc.gameObject;

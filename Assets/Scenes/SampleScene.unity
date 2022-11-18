@@ -26470,6 +26470,7 @@ GameObject:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
+  - component: {fileID: 963194229}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -26543,6 +26544,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 39.72, y: 0, z: 0}
+--- !u!114 &963194229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d64ba2dcc0e016545b20d1454f6dedb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: {x: 0, y: 5, z: -5}
+  xRotation: 45
+  smoothingTime: 0.25
 --- !u!1001 &964261810
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -39517,79 +39533,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 90904c281ebda4c4396560328fb841aa, type: 3}
---- !u!1 &1502385245
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1502385247}
-  - component: {fileID: 1502385246}
-  - component: {fileID: 1502385248}
-  m_Layer: 0
-  m_Name: CubeGameManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1502385246
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1502385245}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0d1aad0ed92a43479296e6052d6e90b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  roomName: CaldanaRicci's Room
-  maxPlayersNum: 2
-  serializationRate: 100
-  smallCubesParent: {fileID: 470186205}
-  bigCube: {fileID: 2072745020}
---- !u!4 &1502385247
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1502385245}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1502385248
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1502385245}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents:
-  - {fileID: 1502385246}
-  sceneViewId: 1
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!4 &1502698947 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4649276400294529949, guid: 90904c281ebda4c4396560328fb841aa, type: 3}
@@ -56698,3 +56641,72 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 90904c281ebda4c4396560328fb841aa, type: 3}
+--- !u!1001 &9067614530629069157
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 9067614531594517765, guid: c915bb9002d4c2446a3a58c1a1db846f, type: 3}
+      propertyPath: sceneViewId
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067614531594517816, guid: c915bb9002d4c2446a3a58c1a1db846f, type: 3}
+      propertyPath: m_Name
+      value: CubeGameManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067614531594517818, guid: c915bb9002d4c2446a3a58c1a1db846f, type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067614531594517818, guid: c915bb9002d4c2446a3a58c1a1db846f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067614531594517818, guid: c915bb9002d4c2446a3a58c1a1db846f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067614531594517818, guid: c915bb9002d4c2446a3a58c1a1db846f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067614531594517818, guid: c915bb9002d4c2446a3a58c1a1db846f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067614531594517818, guid: c915bb9002d4c2446a3a58c1a1db846f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067614531594517818, guid: c915bb9002d4c2446a3a58c1a1db846f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067614531594517818, guid: c915bb9002d4c2446a3a58c1a1db846f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067614531594517818, guid: c915bb9002d4c2446a3a58c1a1db846f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067614531594517818, guid: c915bb9002d4c2446a3a58c1a1db846f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067614531594517818, guid: c915bb9002d4c2446a3a58c1a1db846f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067614531594517819, guid: c915bb9002d4c2446a3a58c1a1db846f, type: 3}
+      propertyPath: bigCube
+      value: 
+      objectReference: {fileID: 2072745020}
+    - target: {fileID: 9067614531594517819, guid: c915bb9002d4c2446a3a58c1a1db846f, type: 3}
+      propertyPath: smallCubesParent
+      value: 
+      objectReference: {fileID: 470186205}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c915bb9002d4c2446a3a58c1a1db846f, type: 3}

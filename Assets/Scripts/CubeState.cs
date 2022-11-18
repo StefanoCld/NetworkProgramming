@@ -7,8 +7,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
 struct CubeState 
 {
     short positionX;
@@ -69,6 +67,7 @@ struct CubeState
         float t = Mathf.InverseLerp(originalMin, originalMax, value);
         return Mathf.Lerp(newMin, newMax, t);
     }
+
     public static byte[] Serialize(object customType)
     {
         CubeState s = (CubeState)customType;
