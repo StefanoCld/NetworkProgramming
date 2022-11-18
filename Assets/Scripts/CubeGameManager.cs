@@ -112,6 +112,7 @@ public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
 
     void Update()
     {
+
     }
 
     public override void OnConnectedToMaster()

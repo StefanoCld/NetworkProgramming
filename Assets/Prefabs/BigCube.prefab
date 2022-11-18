@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1240587232029627422}
   - component: {fileID: 1240587232029627490}
   - component: {fileID: 1240587232029627489}
+  - component: {fileID: 8059985062893091669}
   m_Layer: 0
   m_Name: BigCube
   m_TagString: BigCube
@@ -137,3 +138,20 @@ MonoBehaviour:
   boomForce: 0.75
   boomRadius: 1.54
   boomForceMode: 2
+--- !u!114 &8059985062893091669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1240587232029627423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75871d2a6a3ce9649bb61ad8db4a1769, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  positionInterpolationFactor: 50
+  rotationInterpolationFactor: 50
+  IsMasterClient: 0
+  lastPackagePosition: {x: 0, y: 0, z: 0}
+  lastPackageRotation: {x: 0, y: 0, z: 0, w: 0}
