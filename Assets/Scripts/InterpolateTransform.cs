@@ -9,6 +9,8 @@ public class InterpolateTransform : MonoBehaviour
     [SerializeField] private float positionInterpolationFactor = 50f;
     [SerializeField] private float rotationInterpolationFactor = 50f;
 
+    public bool IsMasterClient = false;
+
     public Vector3 lastPackagePosition;
     public Quaternion lastPackageRotation;
 
@@ -20,7 +22,7 @@ public class InterpolateTransform : MonoBehaviour
 
     void Update()
     {
-        if (!PhotonNetwork.IsMasterClient)
+        if (!IsMasterClient)
         {
             transform.position = Vector3.Lerp(transform.position, lastPackagePosition, Time.deltaTime * positionInterpolationFactor);
             transform.rotation = Quaternion.Slerp(transform.rotation, lastPackageRotation, Time.deltaTime * rotationInterpolationFactor);

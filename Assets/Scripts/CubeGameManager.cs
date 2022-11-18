@@ -104,6 +104,7 @@ public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
         }
 
         Debug.Log("About to connect..");
+
         PhotonNetwork.ConnectUsingSettings();
 
         myPhotonView = GetComponent<PhotonView>();
@@ -111,7 +112,6 @@ public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
 
     void Update()
     {
-
     }
 
     public override void OnConnectedToMaster()
@@ -130,6 +130,10 @@ public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
     {
         base.OnJoinedRoom();
 
+        Debug.Log("OnJoinedRoom() called!");
+
+        Debug.Log("I am the MasterClient = " + PhotonNetwork.IsMasterClient);
+
         if (PhotonNetwork.IsMasterClient)
         {
             bigCube.GetComponent<Rigidbody>().isKinematic = false;
@@ -140,6 +144,8 @@ public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
             {
                 smallCube.GetComponent<Rigidbody>().isKinematic = false;
                 smallCube.GetComponent<Rigidbody>().useGravity = true;
+
+                smallCube.GetComponent<InterpolateTransform>().IsMasterClient = true;
             }
         }
     }
