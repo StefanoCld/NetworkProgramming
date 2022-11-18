@@ -61,8 +61,15 @@ public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
 
     private void ReadFromStream(PhotonStream stream)
     {
-        bigCube.transform.position = (Vector3)stream.ReceiveNext();
-        bigCube.transform.rotation = (Quaternion)stream.ReceiveNext();
+        Vector3 bigCubeNewPos = (Vector3)stream.ReceiveNext();
+        Quaternion bigCubeNewRot = (Quaternion)stream.ReceiveNext();
+
+        InterpolateTransform itbc = bigCube.GetComponent<InterpolateTransform>();
+        if (itbc)
+        {
+            itbc.lastPackagePosition = bigCubeNewPos;
+            itbc.lastPackageRotation = bigCubeNewRot;
+        }
 
         int receivedCubeStates = (int)stream.ReceiveNext();
 
@@ -71,18 +78,15 @@ public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
             CubeState cubeState = (CubeState)stream.ReceiveNext();
             Transform smallCube = smallCubesParent.transform.GetChild(cubeState.index);
 
-            Vector3 pos = Vector3.zero;
-            Quaternion rot = Quaternion.identity;
-            cubeState.DecompressData(ref pos, ref rot);
+            Vector3 smallCubeNewPos = Vector3.zero;
+            Quaternion smallCubeNewRot = Quaternion.identity;
+            cubeState.DecompressData(ref smallCubeNewPos, ref smallCubeNewRot);
 
-            //smallCube.transform.position = pos;
-            //smallCube.transform.rotation = rot;
-
-            InterpolateTransform it = smallCube.GetComponent<InterpolateTransform>();
-            if (it)
+            InterpolateTransform itsc = smallCube.GetComponent<InterpolateTransform>();
+            if (itsc)
             {
-                it.lastPackagePosition = pos;
-                it.lastPackageRotation = rot;
+                itsc.lastPackagePosition = smallCubeNewPos;
+                itsc.lastPackageRotation = smallCubeNewRot;
             }
 
             if (cubeState.isInteracting) smallCube.GetComponent<SmallCube>().Interact();
@@ -140,6 +144,7 @@ public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
             bigCube.GetComponent<Rigidbody>().isKinematic = false;
             bigCube.GetComponent<Rigidbody>().useGravity = true;
             bigCube.GetComponent<BigCubeController>().enabled = true;
+
             bigCube.GetComponent<InterpolateTransform>().IsMasterClient = true;
 
             foreach (Transform smallCube in smallCubesParent.transform)
