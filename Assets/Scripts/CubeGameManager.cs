@@ -38,6 +38,11 @@ public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
         stream.SendNext(bigCube.transform.position);
         stream.SendNext(bigCube.transform.rotation);
 
+        m_bytesSentThisSecond += CubeState.GetSize();
+
+
+
+
         uint childIndex = 0;
         foreach (Transform smallCube in smallCubesParent.transform)
         {
@@ -46,6 +51,11 @@ public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
                 CubeState cubeState = new CubeState();
                 cubeState.CompressData(smallCube.position, smallCube.rotation, smallCube.GetComponent<SmallCube>().isInteracting, (ushort)childIndex);
                 cubeStates.Add(cubeState);
+
+
+                m_bytesSentThisSecond += CubeState.GetSize();
+
+
             }
 
             ++childIndex;
@@ -114,8 +124,17 @@ public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
         myPhotonView = GetComponent<PhotonView>();
     }
 
+    float m_sendingTime = 0;
+    uint m_bytesSentThisSecond = 0;
+
     void Update()
     {
+        if (photonView.IsMine && Time.time >= m_sendingTime + 1)
+        {
+            Debug.Log(m_bytesSentThisSecond);
+            m_sendingTime = Time.time;
+            m_bytesSentThisSecond = 0;
+        }
 
     }
 
