@@ -21,59 +21,71 @@ public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
 
     private List<CubeState> cubeStates = new List<CubeState>(smallCubesNumber);
 
-    private uint m_bytesSentThisSecond;
-
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
         {
-            stream.SendNext(bigCube.transform.position);
-            stream.SendNext(bigCube.transform.rotation);
-
-            uint childIndex = 0;
-            foreach (Transform smallCube in smallCubesParent.transform)
-            {
-                if (smallCube.GetComponent<Rigidbody>().velocity != Vector3.zero)
-                {
-                    CubeState cubeState = new CubeState();
-                    cubeState.CompressData(smallCube.position, smallCube.rotation, smallCube.GetComponent<SmallCube>().isInteracting, (ushort)childIndex);
-                    cubeStates.Add(cubeState);
-                    m_bytesSentThisSecond += CubeState.GetSize();
-                }
-
-                ++childIndex;
-            }
-
-            stream.SendNext(cubeStates.Count);
-            foreach (CubeState cubeState in cubeStates)
-            {
-                stream.SendNext(cubeState);
-            }
-            cubeStates.Clear();
+            WriteOnStream(stream);
         }
 
         if (stream.IsReading)
         {
-            bigCube.transform.position = (Vector3)stream.ReceiveNext();
-            bigCube.transform.rotation = (Quaternion)stream.ReceiveNext();
+            ReadFromStream(stream);
+        }
+    }
+    private void WriteOnStream(PhotonStream stream)
+    {
+        stream.SendNext(bigCube.transform.position);
+        stream.SendNext(bigCube.transform.rotation);
 
-            int receivedCubeStates = (int)stream.ReceiveNext();
-
-            for (int i = 0; i < receivedCubeStates; ++i)
+        uint childIndex = 0;
+        foreach (Transform smallCube in smallCubesParent.transform)
+        {
+            if (smallCube.GetComponent<Rigidbody>().velocity != Vector3.zero)
             {
-                CubeState cubeState = (CubeState)stream.ReceiveNext();
-                Transform smallCube = smallCubesParent.transform.GetChild(cubeState.index);
-
-                Vector3 pos = Vector3.zero;
-                Quaternion rot = Quaternion.identity;
-                cubeState.DecompressData(ref pos, ref rot);
-
-                smallCube.transform.position = pos;
-                smallCube.transform.rotation = rot;
-
-                if (cubeState.isInteracting) smallCube.GetComponent<SmallCube>().Interact();
+                CubeState cubeState = new CubeState();
+                cubeState.CompressData(smallCube.position, smallCube.rotation, smallCube.GetComponent<SmallCube>().isInteracting, (ushort)childIndex);
+                cubeStates.Add(cubeState);
             }
 
+            ++childIndex;
+        }
+
+        stream.SendNext(cubeStates.Count);
+        foreach (CubeState cubeState in cubeStates)
+        {
+            stream.SendNext(cubeState);
+        }
+        cubeStates.Clear();
+    }
+
+    private void ReadFromStream(PhotonStream stream)
+    {
+        bigCube.transform.position = (Vector3)stream.ReceiveNext();
+        bigCube.transform.rotation = (Quaternion)stream.ReceiveNext();
+
+        int receivedCubeStates = (int)stream.ReceiveNext();
+
+        for (int i = 0; i < receivedCubeStates; ++i)
+        {
+            CubeState cubeState = (CubeState)stream.ReceiveNext();
+            Transform smallCube = smallCubesParent.transform.GetChild(cubeState.index);
+
+            Vector3 pos = Vector3.zero;
+            Quaternion rot = Quaternion.identity;
+            cubeState.DecompressData(ref pos, ref rot);
+
+            //smallCube.transform.position = pos;
+            //smallCube.transform.rotation = rot;
+
+            InterpolateTransform it = smallCube.GetComponent<InterpolateTransform>();
+            if (it)
+            {
+                it.lastPackagePosition = pos;
+                it.lastPackageRotation = rot;
+            }
+
+            if (cubeState.isInteracting) smallCube.GetComponent<SmallCube>().Interact();
         }
     }
 
@@ -86,11 +98,12 @@ public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
             CubeState.Serialize,
             CubeState.Deserialize);
 
-        if (registrationResult)
+        if (!registrationResult)
         {
             Debug.LogError("Custom Type registration Error!");
         }
 
+        Debug.Log("About to connect..");
         PhotonNetwork.ConnectUsingSettings();
 
         myPhotonView = GetComponent<PhotonView>();
@@ -98,7 +111,7 @@ public class CubeGameManager : MonoBehaviourPunCallbacks, IPunObservable
 
     void Update()
     {
-        //Logica send-rate
+
     }
 
     public override void OnConnectedToMaster()

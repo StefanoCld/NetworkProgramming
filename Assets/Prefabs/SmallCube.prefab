@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4649276400294529936}
   - component: {fileID: 4649276400294529948}
   - component: {fileID: 2722134089674382618}
+  - component: {fileID: 5816842401720577535}
   m_Layer: 0
   m_Name: SmallCube
   m_TagString: SmallCube
@@ -131,3 +132,20 @@ MonoBehaviour:
   interactColor: {r: 1, g: 0, b: 0.03836775, a: 0}
   waitToFadeTime: 1
   fadingTime: 0.25
+  isInteracting: 0
+--- !u!114 &5816842401720577535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4649276400294529937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75871d2a6a3ce9649bb61ad8db4a1769, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  positionInterpolationFactor: 50
+  rotationInterpolationFactor: 50
+  lastPackagePosition: {x: 0, y: 0, z: 0}
+  lastPackageRotation: {x: 0, y: 0, z: 0, w: 0}
