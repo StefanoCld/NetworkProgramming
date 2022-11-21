@@ -44,10 +44,12 @@ struct CubeState
 
     public void DecompressData(ref Vector3 position, ref Quaternion rotation)
     {
+        // Unpacks position data from short to a float value, between -64 and 64
         position.x = Remap(positionX, short.MinValue, short.MaxValue, -64, 64);
         position.y = Remap(positionY, 0, byte.MaxValue, 0, 8);
         position.z = Remap(positionZ, short.MinValue, short.MaxValue, -64, 64);
 
+        // Unpacks rotation data from an 8 bit unsigned value (byte) to a float value, between -1 and 1
         rotation.x = Remap(rotationX, 0, byte.MaxValue, -1, 1);
         rotation.y = Remap(rotationY, 0, byte.MaxValue, -1, 1);
         rotation.z = Remap(rotationZ, 0, byte.MaxValue, -1, 1);

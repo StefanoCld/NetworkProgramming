@@ -95,7 +95,7 @@ public class BigCubeController : MonoBehaviour
 
     void Float()
     {
-        // Push BigCube upwards
+        // Push big cube upwards
         float UpForceMultiplier = 1 / (transform.position.y);
 
         rb.AddForce(Vector3.up * (floatingUpForce * UpForceMultiplier));
